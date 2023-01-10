@@ -38,11 +38,22 @@ class AuthController extends Controller
 
     public function checkToken(AuthCheckTokenRequest $request)
     {
-        $token = PersonalAccessToken::findToken($request->token);
+        $token = $request->input('token');
 
-        $user = $token->tokenable;
+        $access_token = PersonalAccessToken::findToken($token);
 
-        return $user;
+        if (!$access_token)
+            return response()->json([
+                'state' => false,
+                'message' => 'token is invalid'
+            ]);
+
+        $user = $access_token?->tokenable;
+
+        return response()->json([
+            'state' => true,
+            'data' => $user
+        ]);;
 
     }
 }
