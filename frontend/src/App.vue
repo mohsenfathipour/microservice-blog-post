@@ -25,7 +25,7 @@ import {RouterLink, RouterView} from 'vue-router'
             </li>
           </ul>
           <div class="d-flex">
-            <a class="btn btn-outline-secondary">Login</a>
+            <RouterLink :to="{ name:'auth.login'}" class="btn btn-outline-secondary" aria-current="page" href="#">Login</RouterLink>
           </div>
         </div>
       </div>
