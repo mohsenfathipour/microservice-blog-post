@@ -13,7 +13,7 @@ class PostController extends Controller
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
-            ->get($url);
+            ->get($url)->json();
 
         return response()->json($response);
     }
