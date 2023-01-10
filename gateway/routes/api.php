@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AuthGateway;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,5 +26,10 @@ Route::get('/health', function () {
     ]);
 });
 
-Route::resource('post',PostController::class);
-Route::resource('user',UserController::class);
+Route::prefix('auth')->group(function (){
+    Route::post('/login', [AuthController::class,'login']);
+});
+
+Route::middleware(AuthGateway::class)->resource('post',PostController::class);
+
+Route::middleware(AuthGateway::class)->resource('user',UserController::class);
