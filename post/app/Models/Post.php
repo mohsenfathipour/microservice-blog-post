@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Post extends Model
 {
@@ -27,12 +29,15 @@ class Post extends Model
 
     protected function user(): Attribute
     {
-        if( ! $this->user_id )
+        if (!$this->user_id)
             return Attribute::make(get: fn() => null);
 
         $url = config('microservice.user') . 'user/' . $this->user_id;
 
-        $user = Http::get($url);
+        $user = Http::withToken(request()->bearerToken())
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get($url)
+            ->json();
 
         return Attribute::make(
             get: fn() => $user['data'],
