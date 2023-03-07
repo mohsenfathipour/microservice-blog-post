@@ -13,9 +13,9 @@ class PostController extends Controller
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
-            ->get($url)->json();
+            ->get($url);
 
-        return response()->json($response);
+        return response()->json($response->json(),$response->status());
     }
 
     public function store(Request $request)
@@ -24,9 +24,9 @@ class PostController extends Controller
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
-            ->post($url, $request->all())->json();
+            ->post($url, $request->all());
 
-        return response()->json($response);;
+        return response()->json($response->json(),$response->status());
     }
 
 

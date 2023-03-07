@@ -9,10 +9,12 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-
         $url = config('microservice.user') . 'auth/login';
-        $response = Http::withHeaders(request()->header())->post($url,$request->all())->json();
 
-        return response()->json($response);
+        $response = Http::withToken($request->bearerToken())
+            ->withHeaders(['Accept' => 'application/json'])
+            ->post($url,$request->all());
+
+        return response()->json($response->json(),$response->status());
     }
 }
