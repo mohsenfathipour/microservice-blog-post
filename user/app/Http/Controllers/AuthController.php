@@ -8,6 +8,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -22,7 +23,7 @@ class AuthController extends Controller
             return response()->json([
                 'state' => false,
                 'message' => 'email or password is invalid'
-            ]);
+            ],Response::HTTP_UNPROCESSABLE_ENTITY);
 
 
         // Revoke all tokens...
