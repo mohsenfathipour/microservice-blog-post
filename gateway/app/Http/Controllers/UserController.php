@@ -18,6 +18,18 @@ class UserController extends Controller
         return response()->json($response->json(),$response->status());
     }
 
+
+    public function show(int $id , Request $request)
+    {
+        $url = config('microservice.user') . 'user' . '/' . $id;
+
+        $response = Http::withToken($request->bearerToken())
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get($url);
+
+        return response()->json($response->json(),$response->status());
+    }
+
     public function store(Request $request)
     {
         $url = config('microservice.user') . 'user';

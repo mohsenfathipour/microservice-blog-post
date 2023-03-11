@@ -26,10 +26,23 @@ Route::get('/health', function () {
     ]);
 });
 
-Route::prefix('auth')->group(function (){
-    Route::post('/login', [AuthController::class,'login']);
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::middleware(AuthGateway::class)->resource('post',PostController::class);
 
-Route::middleware(AuthGateway::class)->resource('user',UserController::class);
+Route::middleware(AuthGateway::class)
+    ->prefix('post')
+    ->group(function () {
+        Route::get('/',[PostController::class , 'index']);
+        Route::get('/{id}',[PostController::class , 'show']);
+        Route::post('/',[PostController::class , 'store']);
+    });
+
+Route::middleware(AuthGateway::class)
+    ->prefix('user')
+    ->group(function () {
+        Route::get('/',[UserController::class , 'index']);
+        Route::get('/{id}',[UserController::class , 'show']);
+        Route::post('/',[UserController::class , 'store']);
+    });
