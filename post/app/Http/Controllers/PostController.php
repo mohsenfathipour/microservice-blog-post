@@ -46,7 +46,11 @@ class PostController extends Controller
 
         # Check User:
         $url = config('microservice.user') . 'user/' . $data['user_id'];
-        $user = Http::get($url);
+
+        $user = Http::withToken($request->bearerToken())
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get($url);
+
         if (!isset($user['data']))
             return response()->json([
                 'state' => false,
