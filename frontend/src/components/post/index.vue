@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
 import {ref} from "vue";
+import {config} from "@/env";
 
 export default {
   setup() {
@@ -8,7 +9,7 @@ export default {
     const posts = ref([]);
 
     /* Load Posts */
-    axios.get('http://gateway.microservice.local/api/post')
+    axios.get(config.gateway + 'post')
         .then(function (response) {
           posts.value = response.data.data;
           loading.value = false;

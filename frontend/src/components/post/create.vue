@@ -4,6 +4,7 @@
 import {reactive, ref} from "vue";
 import axios from "axios";
 import router from "@/router";
+import {config} from "@/env";
 
 export default {
   setup() {
@@ -16,7 +17,7 @@ export default {
     const loading = ref(false);
 
     /* Load Users */
-    axios.get('http://gateway.microservice.local/api/user')
+    axios.get(config.gateway + 'user')
         .then(function (response) {
             users.value = response.data.data;
         });
@@ -24,7 +25,7 @@ export default {
 
     function create() {
       loading.value = true;
-      axios.post('http://gateway.microservice.local/api/post', {
+      axios.post(config.gateway + 'post', {
         title: post.name,
         content: post.content,
         user_id: post.user_id

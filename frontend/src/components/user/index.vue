@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
 import {ref} from "vue";
+import {config} from "@/env";
 
 export default {
   setup() {
@@ -8,7 +9,7 @@ export default {
     const users = ref([]);
 
     /* Load Users */
-    axios.get('http://gateway.microservice.local/api/user')
+    axios.get(config.gateway + 'user')
         .then(function (response) {
           users.value = response.data.data;
           loading.value = false;

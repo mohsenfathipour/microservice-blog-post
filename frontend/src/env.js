@@ -1,3 +1,3 @@
 export const config = {
-    "gateway" : "http://gateway.microservice.local/api/",
+    "gateway" : "http://gateway.micro-blog.ir/api/",
 }
