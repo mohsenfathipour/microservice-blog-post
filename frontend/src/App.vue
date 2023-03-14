@@ -1,5 +1,22 @@
-<script setup>
-import {RouterLink, RouterView} from 'vue-router'
+<script>
+
+
+import {ref} from "vue";
+import axios from "axios";
+
+export default {
+  setup() {
+    const is_logged = ref(false);
+    let token = localStorage.getItem('token');
+
+    if (token) {
+      axios.defaults.headers.common = {'Authorization': `Bearer ${token}`};
+      is_logged.value = true;
+    }
+
+    return {is_logged, token};
+  }
+}
 </script>
 
 <template>
@@ -17,15 +34,21 @@ import {RouterLink, RouterView} from 'vue-router'
             <li class="nav-item">
               <RouterLink :to="{ name:'home'}" class="nav-link active" aria-current="page" href="#">Home</RouterLink>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="is_logged">
               <RouterLink :to="{ name:'post.index'}" class="nav-link" aria-current="page" href="#">Post</RouterLink>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="is_logged">
               <RouterLink :to="{ name:'user.index'}" class="nav-link" aria-current="page" href="#">User</RouterLink>
             </li>
           </ul>
-          <div class="d-flex">
-            <RouterLink :to="{ name:'auth.login'}" class="btn btn-outline-secondary" aria-current="page" href="#">Login</RouterLink>
+          <div class="d-flex" v-if="!is_logged">
+            <RouterLink :to="{ name:'auth.login'}" class="btn btn-outline-secondary" aria-current="page" href="#">
+              Login
+            </RouterLink>
+          </div>
+          <div class="d-flex" v-if="is_logged">
+            <RouterLink :to="{ name:'auth.logout'}" class="btn btn-outline-danger" aria-current="page" href="#">Logout
+            </RouterLink>
           </div>
         </div>
       </div>

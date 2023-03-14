@@ -7,6 +7,8 @@ import UserIndex from "@/components/user/index.vue";
 import UserCreate from "@/components/user/create.vue";
 
 import AuthLogin from "@/components/auth/login.vue";
+import AuthLogout from "@/components/auth/logout.vue";
+import AuthSignup from "@/components/auth/signup.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +42,16 @@ const router = createRouter({
       path: '/auth/login',
       name: 'auth.login',
       component: AuthLogin
+    },
+    {
+      path: '/auth/logout',
+      name: 'auth.logout',
+      component: AuthLogout
+    },
+    {
+      path: '/auth/signup',
+      name: 'auth.signup',
+      component: AuthSignup
     }
   ]
 })

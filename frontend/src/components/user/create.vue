@@ -1,38 +1,33 @@
 <script>
-
-
 import {reactive, ref} from "vue";
 import axios from "axios";
 import router from "@/router";
+import {config} from "@/env";
 
 export default {
   setup() {
     const user = reactive({
       name: "",
       email: "",
-      password: ""
+      password: "",
     });
     const loading = ref(false);
 
     function createUser() {
       loading.value = true;
-      axios.post('http://gateway.microservice.local/api/user', {
-        name: user.name,
-        email: user.email,
-        password: user.password
-      })
-          .then(function (response) {
-            loading.value = false;
-            router.push('/user')
-
-          });
+      axios.post(config.gateway + '/user', {
+          email: user.email,
+          password: user.password,
+        })
+        .then(function (response) {
+          loading.value = false;
+          router.push("/user");
+        });
     }
 
-
-    return {user, createUser, loading};
-
-  }
-}
+    return { user, createUser, loading };
+  },
+};
 </script>
 
 <template>

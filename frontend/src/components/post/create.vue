@@ -31,7 +31,7 @@ export default {
       })
           .then(function (response) {
             loading.value = false;
-            router.push('/post')
+            router.push('/post');
           });
     }
 
