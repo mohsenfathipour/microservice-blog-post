@@ -11,9 +11,8 @@ class AuthController extends Controller
     {
         $url = config('microservice.user') . 'auth/login';
 
-        $response = Http::withToken($request->bearerToken())
-            ->withHeaders(['Accept' => 'application/json'])
-            ->post($url,$request->all());
+        $response = Http::withHeaders(['Accept' => 'application/json'])
+                            ->post($url,$request->all());
 
         return response()->json($response->json(),$response->status());
     }
