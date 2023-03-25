@@ -105,12 +105,12 @@ class RoleController extends Controller
     }
     public function storePermissionToRole( Role $role, Permission $permission)
     {
-        $role->permissions()->attach($permission);
+        $role->permissions()->syncWithoutDetaching($permission);
         return response()->json(['message' => 'Permission added to role successfully.']);
     }
     public function destroyPermissionToRole( Role $role, Permission $permission)
     {
-        $role->permissions()->detach($permission);
+        $role->permissions()->syncWithoutDetaching($permission);
         return response()->json(['message' => 'Permission removed to role successfully.']);
     }
 }
