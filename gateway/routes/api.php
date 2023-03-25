@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthGateway;
@@ -37,6 +38,9 @@ Route::middleware(AuthGateway::class)
         Route::get('/',[PostController::class , 'index']);
         Route::get('/{id}',[PostController::class , 'show']);
         Route::post('/',[PostController::class , 'store']);
+        /* Comments: */
+        Route::get('{id}/comment',[CommentController::class,'show']);
+        Route::post('{id}/comment',[CommentController::class,'store']);
     });
 
 Route::middleware(AuthGateway::class)

@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +23,7 @@ Route::get('/health', function () {
     ]);
 });
 
-Route::resource('post', PostController::class);
+Route::apiResource('post', PostController::class);
+
+Route::get('post/{post}/comment',[CommentController::class,'show']);
+Route::post('post/{post}/comment',[CommentController::class,'store']);
