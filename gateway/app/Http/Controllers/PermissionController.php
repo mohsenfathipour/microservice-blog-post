@@ -5,24 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class UserController extends Controller
+class PermissionController extends Controller
 {
     public function index(Request $request)
     {
-        $url = config('microservice.user') . 'user';
-
-        $response = Http::withToken($request->bearerToken())
-            ->withHeaders(['Accept' => 'application/json'])
-            ->get($url);
-
-        return response()->json($response->json(),$response->status());
-    }
-
-
-    public function show(int $user_id , Request $request)
-    {
-
-        $url = config('microservice.user') . "user/$user_id";
+        $url = config('microservice.user') . 'permission';
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
@@ -33,7 +20,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $url = config('microservice.user') . 'user';
+        $url = config('microservice.user') . "permission";
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
@@ -42,19 +29,20 @@ class UserController extends Controller
         return response()->json($response->json(),$response->status());
     }
 
-    public function role(Request $request, int $user_id)
+    public function show(Request $request,int $id)
     {
-        $url = config('microservice.user') . "user/$user_id/role";
+        $url = config('microservice.user') . "permission/$id";
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
-            ->get($url, $request->all());
+            ->get($url);
 
         return response()->json($response->json(),$response->status());
     }
-    public function storeRoleToUser(Request $request, int $user_id , int $role_id)
+
+    public function update(Request $request, int $id)
     {
-        $url = config('microservice.user') . "user/$user_id/role/$role_id";
+        $url = config('microservice.user') . "permission/$id";
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
@@ -62,9 +50,10 @@ class UserController extends Controller
 
         return response()->json($response->json(),$response->status());
     }
-    public function destroyRoleToUser(Request $request, int $user_id , int $role_id)
+
+    public function destroy(Request $request, int $id)
     {
-        $url = config('microservice.user') . "user/$user_id/role/$role_id";
+        $url = config('microservice.user') . "permission/$id";
 
         $response = Http::withToken($request->bearerToken())
             ->withHeaders(['Accept' => 'application/json'])
@@ -72,9 +61,4 @@ class UserController extends Controller
 
         return response()->json($response->json(),$response->status());
     }
-
-
-
-
-
 }
