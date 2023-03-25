@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -104,5 +105,25 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function role(User $user)
+    {
+        $user->load(['roles']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $user->roles()->get(),
+        ]);
+    }
+    public function storeRoleToUser(User $User, Role $role)
+    {
+        $User->roles()->attach($role);
+        return response()->json(['message' => 'Role added to User successfully.']);
+    }
+    public function destroyRoleToUser(User $User, Role $role)
+    {
+        $User->roles()->detach($role);
+        return response()->json(['message' => 'Role removed to User successfully.']);
     }
 }

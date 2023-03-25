@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +26,30 @@ Route::get('/health', function () {
     ]);
 });
 
-Route::middleware('auth:sanctum') ->resource('user',UserController::class);
+
+Route::middleware('auth:sanctum')
+    ->prefix('user')
+    ->group(function () {
+        Route::apiResource('/',UserController::class);
+        /* Permissions: */
+        Route::get('/{user}/role',[UserController::class,'role']);
+
+        Route::post('/{user}/role/{role}',[UserController::class,'storeRoleToUser']);
+        Route::delete('/{user}/role/{role}',[UserController::class,'destroyRoleToUser']);
+    });
+
+Route::middleware('auth:sanctum')
+    ->prefix('role')
+    ->group(function () {
+        Route::apiResource('/',RoleController::class);
+        /* Permissions: */
+        Route::get('/{role}/permission',[RoleController::class,'permission']);
+
+        Route::post('/{role}/permission/{permission}',[RoleController::class,'storePermissionToRole']);
+        Route::delete('/{role}/permission/{permission}',[RoleController::class,'destroyPermissionToRole']);
+    });
+
+Route::middleware('auth:sanctum') ->apiResource('permission',PermissionController::class);
 
 Route::prefix('auth')->group(function (){
 
@@ -33,4 +58,5 @@ Route::prefix('auth')->group(function (){
     Route::post('/check-token', [AuthController::class,'checkToken']);
 
 });
+
 
