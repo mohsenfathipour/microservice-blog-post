@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         return response()->json([
             'state' => true,
-            'data' => ['token' => $token->plainTextToken]
+            'data' => ['token' => $token->plainTextToken , 'user' => $user]
         ]);
     }
 
