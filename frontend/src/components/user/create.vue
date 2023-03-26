@@ -3,6 +3,7 @@ import {reactive, ref} from "vue";
 import axios from '@/axios';
 import router from "@/router";
 import {config} from "@/env";
+import Swal from "sweetalert2";
 
 export default {
   setup() {
@@ -16,16 +17,37 @@ export default {
     function createUser() {
       loading.value = true;
       axios.post(config.gateway + '/user', {
-          email: user.email,
-          password: user.password,
-        })
-        .then(function (response) {
-          loading.value = false;
-          router.push("/user");
-        });
+        name: user.name,
+        email: user.email,
+        password: user.password,
+      })
+          .then(function (response) {
+            loading.value = false;
+
+            if (!response.data.success) {
+
+              Swal.fire({
+                title: 'User Create Error',
+                text: response.data.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
+              return;
+
+            }
+
+            Swal.fire({
+              title: 'User Created',
+              text: 'User created successfully',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              router.push('/user');
+            });
+          });
     }
 
-    return { user, createUser, loading };
+    return {user, createUser, loading};
   },
 };
 </script>

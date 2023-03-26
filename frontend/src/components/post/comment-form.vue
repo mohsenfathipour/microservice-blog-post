@@ -17,6 +17,8 @@
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import {config} from "@/env";
+import router from "@/router";
+import Swal from "sweetalert2";
 
 export default defineComponent({
   props: {
@@ -42,7 +44,15 @@ export default defineComponent({
             console.log(response.data);
             // clear the form field
             commentContent.value = '';
-            window.location.href = '/post/show/' + props.postId;
+
+            Swal.fire({
+              title: 'Comment Created',
+              text: 'Comment created successfully',
+              icon: 'success'
+            }).then(() => {
+              window.location.href = '/post/show/' + props.postId;
+              });
+
           })
           .catch(error => {
             // handle error

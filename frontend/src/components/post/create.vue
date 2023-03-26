@@ -5,6 +5,7 @@ import {reactive, ref} from "vue";
 import axios from '@/axios';
 import router from "@/router";
 import {config} from "@/env";
+import Swal from 'sweetalert2'
 
 export default {
   setup() {
@@ -30,12 +31,26 @@ export default {
       })
           .then(function (response) {
             if(!response.data.success){
-              alert(response.data.message);
+              Swal.fire({
+                title: 'Post Create Error',
+                text: response.data.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
               return;
             }
 
             loading.value = false;
-            router.push('/post');
+
+            Swal.fire({
+              title: 'Post Created',
+              text: 'Post created successfully',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              router.push('/post');
+            });
+
           });
     }
 

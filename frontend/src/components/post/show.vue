@@ -53,7 +53,7 @@ export default {
       <h6 >Comments:</h6>
 
       <!-- display the comment form component -->
-      <comment-form :postId="id"></comment-form>
+      <comment-form :postId="post.id"></comment-form>
 
       <div class="card mb-3" v-for="comment of post.comments" :key="comment.id">
         <div class="card-body">
