@@ -21,12 +21,22 @@ class PostController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $posts = Post::orderByDesc('id')->get();
+        $perPage = request()->input('perPage', 5); // Default to 10 items per page if not specified
+        $page = request()->input('page', 1); // Default to the first page if not specified
+
+        $posts = Post::withCount('comments')->orderByDesc('id')->paginate($perPage, ['*'], 'page', $page); // Get paginated results with the specified perPage and page parameters
 
         return response()->json([
             'success' => true,
-            'data' => $posts,
+            'data' => $posts->items(),
+            'meta' => [
+                'current_page' => $posts->currentPage(),
+                'last_page' => $posts->lastPage(),
+                'per_page' => $posts->perPage(),
+                'total' => $posts->total(),
+            ],
         ]);
+
     }
 
     /**
@@ -62,6 +72,7 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
+        $post->load(['comments']);
         return response()->json([
             'success' => true,
             'data' => $post,
