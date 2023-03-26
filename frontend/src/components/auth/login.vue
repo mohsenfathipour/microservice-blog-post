@@ -17,13 +17,13 @@ export default {
 
     function login() {
       loading.value = true;
-      axios.post(config.gateway + 'auth/login', {
+      axios.post(config.gateway + '/auth/login', {
         email: user.email,
         password: user.password,
       })
           .then(function (response) {
             loading.value = false;
-            if(!response.data.state){
+            if(!response.data.success){
               error.message = response.data.message;
               return;
             }
@@ -31,7 +31,7 @@ export default {
             let token = response.data.data.token;
             localStorage.setItem('token',token);
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`};
-            router.push('/post');
+            window.location.href = '/';
           });
     }
 

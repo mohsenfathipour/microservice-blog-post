@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from "@/components/home.vue";
 import PostIndex from "@/components/post/index.vue";
 import PostCreate from "@/components/post/create.vue";
+import PostShow from "@/components/post/show.vue";
+
 import UserIndex from "@/components/user/index.vue";
 import UserCreate from "@/components/user/create.vue";
 
@@ -21,37 +23,43 @@ const router = createRouter({
     {
       path: '/post',
       name: 'post.index',
-      component: PostIndex
+      component: PostIndex,
     },
     {
       path: '/post/create',
       name: 'post.create',
-      component: PostCreate
+      component: PostCreate,
+    },
+    {
+      path: '/post/show/:id',
+      name: 'post.show',
+      component: PostShow,
+      props: true,
     },
     {
       path: '/user',
       name: 'user.index',
-      component: UserIndex
+      component: UserIndex,
     },
     {
       path: '/user/create',
       name: 'user.create',
-      component: UserCreate
+      component: UserCreate,
     },
     {
       path: '/auth/login',
       name: 'auth.login',
-      component: AuthLogin
+      component: AuthLogin,
     },
     {
       path: '/auth/logout',
       name: 'auth.logout',
-      component: AuthLogout
+      component: AuthLogout,
     },
     {
       path: '/auth/signup',
       name: 'auth.signup',
-      component: AuthSignup
+      component: AuthSignup,
     }
   ]
 })

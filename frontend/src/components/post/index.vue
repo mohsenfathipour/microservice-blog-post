@@ -9,7 +9,7 @@ export default {
     const posts = ref([]);
 
     /* Load Posts */
-    axios.get(config.gateway + 'post')
+    axios.get(config.gateway + '/post')
         .then(function (response) {
           posts.value = response.data.data;
           loading.value = false;
@@ -22,6 +22,7 @@ export default {
 </script>
 
 <template>
+
   <main class="container py-3">
     <div class="mb-3 d-flex justify-content-end">
       <RouterLink :to="{ name: 'post.create' }" class="btn btn-dark">Create Post</RouterLink>
@@ -30,11 +31,19 @@ export default {
       <span class="visually-hidden">Loading...</span>
     </div>
 
+
+
     <div class="card mb-3" v-for="post of posts" :key="post.id">
       <div class="card-body">
-        <h5 class="card-title">{{ post.title }}</h5>
+        <router-link :to="{ name: 'post.show', params: { id: post.id } }">
+          <h5 class="card-title">{{ post.title }}</h5>
+        </router-link>
         <p class="card-text">{{ post.content }}</p>
-        <p class="text-muted">{{ post.user.name }} [ {{ post.user.email }} ]</p>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+        <small>Date: <b>{{ post.user.created_at.substring(0,10) }}</b></small>
+        <small>Author: <b>{{ post.user.name }}</b></small>
+        <small>Comments: <b>{{ post.comments_count}}</b></small>
       </div>
     </div>
   </main>

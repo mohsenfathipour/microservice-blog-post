@@ -11,26 +11,29 @@ export default {
     const users = ref([]);
     const post = reactive({
       title: "",
-      content: "",
-      user_id: ""
+      content: ""
     });
     const loading = ref(false);
 
     /* Load Users */
-    axios.get(config.gateway + 'user')
+    axios.get(config.gateway + '/user')
         .then(function (response) {
-            users.value = response.data.data;
+          users.value = response.data.data;
         });
 
 
     function create() {
       loading.value = true;
-      axios.post(config.gateway + 'post', {
+      axios.post(config.gateway + '/post', {
         title: post.name,
-        content: post.content,
-        user_id: post.user_id
+        content: post.content
       })
           .then(function (response) {
+            if(!response.data.success){
+              alert(response.data.message);
+              return;
+            }
+
             loading.value = false;
             router.push('/post');
           });
@@ -54,12 +57,6 @@ export default {
       <div class="my-3">
         <label class="form-label">Content</label>
         <textarea v-model.lazy.trim="post.content" class="form-control" rows="4"></textarea>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">User</label>
-        <select class="form-select" v-model.lazy.trim="post.user_id">
-          <option v-for="user of users" :key="user.id" :value="user.id">{{ user.name }}</option>
-        </select>
       </div>
       <button type="submit" class="btn btn-dark" :disabled="loading">
         <div v-if="loading" class="spinner-border spinner-border-sm text-light me-2" role="status"></div>
