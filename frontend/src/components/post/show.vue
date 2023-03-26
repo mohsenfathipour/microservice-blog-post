@@ -1,5 +1,5 @@
 <script>
-import axios from "axios";
+import axios from '@/axios';
 import {ref} from "vue";
 import {config} from "@/env";
 import CommentForm from './comment-form.vue';
