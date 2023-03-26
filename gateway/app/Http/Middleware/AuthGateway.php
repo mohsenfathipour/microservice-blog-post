@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
@@ -30,7 +31,7 @@ class AuthGateway
             return response()->json([
                 'success' => false,
                 'message' => 'token is invalid'
-            ]);
+            ],Response::HTTP_UNAUTHORIZED);
         }
 
         $user = new GenericUser($response['data']);

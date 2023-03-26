@@ -47,7 +47,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'token is invalid'
-            ]);
+            ],Response::HTTP_UNAUTHORIZED);
 
         $user = $access_token?->tokenable;
 
