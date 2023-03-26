@@ -12,11 +12,6 @@ use Illuminate\Http\Response;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $roles = Role::all();
@@ -27,12 +22,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRoleRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreRoleRequest $request)
     {
         $role = new Role();
@@ -46,12 +35,6 @@ class RoleController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function show(Role $role)
     {
         return response()->json([
@@ -60,13 +43,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRoleRequest  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateRoleRequest $request, Role $role)
     {
         $role->name = $request->input('name');
@@ -78,12 +54,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Role $role)
     {
         $role->delete();
@@ -106,11 +76,17 @@ class RoleController extends Controller
     public function storePermissionToRole( Role $role, Permission $permission)
     {
         $role->permissions()->syncWithoutDetaching($permission);
-        return response()->json(['message' => 'Permission added to role successfully.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Permission added to role successfully.'
+        ]);
     }
     public function destroyPermissionToRole( Role $role, Permission $permission)
     {
-        $role->permissions()->syncWithoutDetaching($permission);
-        return response()->json(['message' => 'Permission removed to role successfully.']);
+        $role->permissions()->detach($permission);
+        return response()->json([
+            'success' => true,
+            'message' => 'Permission removed to role successfully.'
+        ]);
     }
 }

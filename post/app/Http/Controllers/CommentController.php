@@ -22,7 +22,7 @@ class CommentController extends Controller
 
         if (!isset($user['data']))
             return response()->json([
-                'state' => false,
+                'success' => false,
                 'data' => null,
                 'message' => 'user not found'
             ]);
@@ -35,7 +35,7 @@ class CommentController extends Controller
         $comment->save();
 
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => $comment
         ]);
     }
@@ -51,7 +51,7 @@ class CommentController extends Controller
         $posts = Comment::where('post_id',$post->id)->orderByDesc('id')->get();
 
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => $posts
         ]);
     }

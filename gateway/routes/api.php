@@ -29,42 +29,62 @@ Route::get('/health', function () {
     ]);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Auth:
+|--------------------------------------------------------------------------
+*/
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
 
+
+/*
+|--------------------------------------------------------------------------
+| Post Service:
+|--------------------------------------------------------------------------
+*/
+Route::middleware(AuthGateway::class)
+    ->apiResource('post', PostController::class);
+
 Route::middleware(AuthGateway::class)
     ->prefix('post')
     ->group(function () {
-        Route::apiResource('/',PostController::class);
         /* Comments: */
-        Route::get('{id}/comment',[CommentController::class,'show']);
-        Route::post('{id}/comment',[CommentController::class,'store']);
+        Route::get('{id}/comment', [CommentController::class, 'show']);
+        Route::post('{id}/comment', [CommentController::class, 'store']);
     });
 
+
+/*
+|--------------------------------------------------------------------------
+| User Service:
+|--------------------------------------------------------------------------
+*/
+Route::middleware(AuthGateway::class)
+    ->apiResource('user', UserController::class);
 
 Route::middleware(AuthGateway::class)
     ->prefix('user')
     ->group(function () {
-        Route::apiResource('',UserController::class);
-
         /* Permissions: */
-        Route::get('/{user_id}/role',[UserController::class,'role']);
-
-        Route::post('/{user_id}/role/{role_id}',[UserController::class,'storeRoleToUser']);
-        Route::delete('/{user_id}/role/{role_id}',[UserController::class,'destroyRoleToUser']);
+        Route::get('/{user_id}/role', [UserController::class, 'role']);
+        Route::post('/{user_id}/role/{role_id}', [UserController::class, 'storeRoleToUser']);
+        Route::delete('/{user_id}/role/{role_id}', [UserController::class, 'destroyRoleToUser']);
     });
+
+Route::middleware(AuthGateway::class)
+    ->apiResource('role', RoleController::class);
 
 Route::middleware(AuthGateway::class)
     ->prefix('role')
     ->group(function () {
-        Route::apiResource('',RoleController::class);
         /* Permissions: */
-        Route::get('/{role_id}/permission',[RoleController::class,'permission']);
+        Route::get('/{role_id}/permission', [RoleController::class, 'permission']);
 
-        Route::post('/{role_id}/permission/{permission_id}',[RoleController::class,'storePermissionToRole']);
-        Route::delete('/{role_id}/permission/{permission_id}',[RoleController::class,'destroyPermissionToRole']);
+        Route::post('/{role_id}/permission/{permission_id}', [RoleController::class, 'storePermissionToRole']);
+        Route::delete('/{role_id}/permission/{permission_id}', [RoleController::class, 'destroyPermissionToRole']);
     });
 
-Route::middleware(AuthGateway::class) ->apiResource('permission',PermissionController::class);
+Route::middleware(AuthGateway::class)->apiResource('permission', PermissionController::class);

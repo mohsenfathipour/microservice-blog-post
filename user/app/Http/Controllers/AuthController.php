@@ -21,7 +21,7 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password))
             return response()->json([
-                'state' => false,
+                'success' => false,
                 'message' => 'email or password is invalid'
             ],Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -32,7 +32,7 @@ class AuthController extends Controller
         $token = $user->createToken('web-access');
 
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => ['token' => $token->plainTextToken , 'user' => $user]
         ]);
     }
@@ -45,14 +45,14 @@ class AuthController extends Controller
 
         if (!$access_token)
             return response()->json([
-                'state' => false,
+                'success' => false,
                 'message' => 'token is invalid'
             ]);
 
         $user = $access_token?->tokenable;
 
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => $user
         ]);;
 

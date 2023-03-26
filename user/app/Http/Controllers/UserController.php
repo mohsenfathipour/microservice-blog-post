@@ -20,7 +20,7 @@ class UserController extends Controller
         $users = User::orderByDesc('id')->get();
 
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => $users
         ]);
     }
@@ -54,7 +54,7 @@ class UserController extends Controller
         $user->save();
 
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => $user
         ]);
     }
@@ -68,7 +68,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         return response()->json([
-            'state' => true,
+            'success' => true,
             'data' => $user
         ]);
     }
@@ -118,12 +118,20 @@ class UserController extends Controller
     }
     public function storeRoleToUser(User $User, Role $role)
     {
-        $User->roles()->attach($role);
-        return response()->json(['message' => 'Role added to User successfully.']);
+        $User->roles()->syncWithoutDetaching($role);
+
+        return response()->json([
+                'success' => true,
+                'message' => 'Role added to User successfully.'
+            ]);
     }
     public function destroyRoleToUser(User $User, Role $role)
     {
         $User->roles()->detach($role);
-        return response()->json(['message' => 'Role removed to User successfully.']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Role removed to User successfully.'
+        ]);
     }
 }

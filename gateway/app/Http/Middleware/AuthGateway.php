@@ -24,9 +24,9 @@ class AuthGateway
         $response = Http::post($url, ['token' => $token, 'x' => 'mohsen'])->json();
 
         // ToDo: Permission
-        if(!isset($response['state']) || $response['state'] !== true) {
+        if(!isset($response['success']) || $response['success'] !== true) {
             return response()->json([
-                'state' => false,
+                'success' => false,
                 'message' => 'token is invalid'
             ]);
         }

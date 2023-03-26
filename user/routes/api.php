@@ -28,9 +28,11 @@ Route::get('/health', function () {
 
 
 Route::middleware('auth:sanctum')
+    ->apiResource('user', UserController::class);
+
+Route::middleware('auth:sanctum')
     ->prefix('user')
     ->group(function () {
-        Route::apiResource('/',UserController::class);
         /* Permissions: */
         Route::get('/{user}/role',[UserController::class,'role']);
 
@@ -38,10 +40,14 @@ Route::middleware('auth:sanctum')
         Route::delete('/{user}/role/{role}',[UserController::class,'destroyRoleToUser']);
     });
 
+
+Route::middleware('auth:sanctum')
+    ->apiResource('role', RoleController::class);
+
 Route::middleware('auth:sanctum')
     ->prefix('role')
     ->group(function () {
-        Route::apiResource('/',RoleController::class);
+
         /* Permissions: */
         Route::get('/{role}/permission',[RoleController::class,'permission']);
 

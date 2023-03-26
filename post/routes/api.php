@@ -26,4 +26,5 @@ Route::get('/health', function () {
 Route::apiResource('post', PostController::class);
 
 Route::get('post/{post}/comment',[CommentController::class,'show']);
+
 Route::post('post/{post}/comment',[CommentController::class,'store']);
