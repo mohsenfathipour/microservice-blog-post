@@ -49,8 +49,6 @@ class PostController extends Controller
     {
         $data = $request->all();
 
-
-
         $post = new Post();
         $post->title = $data['title'];
         $post->content = $data['content'];

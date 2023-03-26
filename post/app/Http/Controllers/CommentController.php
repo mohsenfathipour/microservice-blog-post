@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class CommentController extends Controller
@@ -13,24 +14,12 @@ class CommentController extends Controller
     {
         $data = $request->all();
 
-        # Check User:
-        $url = config('microservice.user') . 'user/' . $data['user_id'];
 
-        $user = Http::withToken($request->bearerToken())
-            ->withHeaders(['Accept' => 'application/json'])
-            ->get($url);
-
-        if (!isset($user['data']))
-            return response()->json([
-                'success' => false,
-                'data' => null,
-                'message' => 'user not found'
-            ]);
 
         $comment = new Comment();
         $comment->content = $data['content'];
         $comment->post_id = $post->id;
-        $comment->user_id = $user['data']['id'];
+        $comment->user_id = Auth::user()->id;
 
         $comment->save();
 
