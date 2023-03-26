@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\JsonResponse;
@@ -77,6 +78,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post): JsonResponse
     {
+        # Check Author:
+        if($post->user_id != Auth::user()->id){
+            return response()->json([
+                'success' => false,
+                'message' => 'Access Denied',
+            ],Response::HTTP_FORBIDDEN);
+        }
+
         // Todo: Check User Validation
         $validatedData = $request->validated();
 

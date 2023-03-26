@@ -40,5 +40,16 @@ class PostController extends Controller
         return response()->json($response->json(),$response->status());
     }
 
+    public function update(int $id, Request $request)
+    {
+        $url = config('microservice.post') . "post/$id";
+
+        $response = Http::withToken($request->bearerToken())
+            ->withHeaders(['Accept' => 'application/json'])
+            ->patch($url, $request->all());
+
+        return response()->json($response->json(),$response->status());
+    }
+
 
 }
