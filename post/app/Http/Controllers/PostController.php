@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\JsonResponse;
 
@@ -37,24 +38,12 @@ class PostController extends Controller
     {
         $data = $request->all();
 
-        # Check User:
-        $url = config('microservice.user') . 'user/' . $data['user_id'];
 
-        $user = Http::withToken($request->bearerToken())
-            ->withHeaders(['Accept' => 'application/json'])
-            ->get($url);
-
-        if (!isset($user['data']))
-            return response()->json([
-                'success' => false,
-                'data' => null,
-                'message' => 'user not found'
-            ]);
 
         $post = new Post();
         $post->title = $data['title'];
         $post->content = $data['content'];
-        $post->user_id = $user['data']['id'];
+        $post->user_id = Auth::user()->id;
 
         $post->save();
 

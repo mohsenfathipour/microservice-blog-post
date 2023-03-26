@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Middleware\AuthGateway;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +24,11 @@ Route::get('/health', function () {
     ]);
 });
 
-Route::apiResource('post', PostController::class);
+Route::middleware(AuthGateway::class)
+    ->apiResource('post', PostController::class);
 
-Route::get('post/{post}/comment',[CommentController::class,'show']);
+Route::middleware(AuthGateway::class)
+    ->get('post/{post}/comment',[CommentController::class,'show']);
 
-Route::post('post/{post}/comment',[CommentController::class,'store']);
+Route::middleware(AuthGateway::class)
+    ->post('post/{post}/comment',[CommentController::class,'store']);
